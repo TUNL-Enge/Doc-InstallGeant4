@@ -1,0 +1,40 @@
+#+TITLE: Installing Geant4.10 on Ubuntu-type linux
+#+DATE: <2015-10-23 Fri>
+#+AUTHOR: Richard Longland
+#+EMAIL: longland@X1Carbon
+#+OPTIONS: ':nil *:t -:t ::t <:t H:2 \n:nil ^:t arch:headline
+#+OPTIONS: author:t c:nil creator:comment d:nil date:t e:t email:nil
+#+OPTIONS: f:t inline:t num:t p:nil pri:nil stat:t tags:not-in-toc
+#+OPTIONS: tasks:t tex:t timestamp:t toc:nil todo:t |:t
+#+CREATOR: Emacs 24.3.1 (Org mode 8.2.4)
+#+DESCRIPTION:
+#+EXCLUDE_TAGS: noexport
+#+KEYWORDS:
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+* Introduction
+  This short guide should get you set up for a relatively pain free
+  Geant4.10 installation. It used cmake for the installation, which
+  turns out to be quite convenient!
+* Prerequisites
+  - Install from packages using this command:
+    #+BEGIN_SRC sh
+      sudo apt-get install <package_name>
+    #+END_SRC
+    - emacs
+    - build-essential
+    - libgsl0-dev
+    - libxerces-c-dev
+    - libcoin80-dev
+    - libglu1-mesa-dev
+    - cmake
+    - libexpat1-dev
+    - libinventor1
+    - magit
+    - libxft-dev
+    - libxml2-dev
+    - libmotif-dev
+    - libqt4-dev
+    - libqt4-opengl-dev
+  - Some things should be installed from source.
+    - Dawn
