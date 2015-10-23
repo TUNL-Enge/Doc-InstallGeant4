@@ -36,5 +36,115 @@
     - libmotif-dev
     - libqt4-dev
     - libqt4-opengl-dev
+    - tk
   - Some things should be installed from source.
-    - Dawn
+    - Dawn (http://geant4.kek.jp/~tanaka/DAWN/About_DAWN.html)
+      - Download [[http://geant4.kek.jp/~tanaka/src/dawn_3_90b.tgz][source]]
+      - Untar the code
+	#+BEGIN_SRC sh
+          tar -xzvf dawn_3_90b.tgz
+          cd dawn_3_90b/
+	#+END_SRC
+      - Run the compile commands from the README.txt
+	#+BEGIN_SRC sh
+          cp Makefile.default Makefile
+          make clean
+          make guiclean
+          make 
+          sudo make install
+        #+END_SRC
+      - *OR* You can just install [[http://engesrv.physics.ncsu.edu:85/debs/amd64/dawn_3.90b_amd64.deb][my ubuntu package]] :)
+    - SoXt (https://bitbucket.org/Coin3D/coin/wiki/Home)
+      - Download the [[https://bitbucket.org/Coin3D/coin/downloads/SoXt-1.3.0.tar.gz][source]]
+      - untar
+	#+BEGIN_SRC sh
+          tar -xzvf SoXt-1.3.0.tar.gz
+          cd SoXt-1.3.0/
+	#+END_SRC
+      - Run the compile commands detailed in the ~INSTALL~ file
+	#+BEGIN_SRC sh
+          ./configure
+          make
+          sudo make install
+	#+END_SRC
+      - *OR* you can just install [[http://engesrv.physics.ncsu.edu:85/debs/amd64/soxt_1.3.0_amd64.deb][my ubuntu package]] :)
+* Preparation
+  - I like to put things like geant4 in the /opt directory. It makes
+    them system-wide and easier to separate from the other junk in
+    your home folder.
+  - You need to change the privileges to allow your user (~longland~
+    in my case)
+    #+BEGIN_SRC sh
+      cd /opt
+      sudo mkdir geant4
+      chown -R longland:longland geant4    
+    #+END_SRC
+* Download the geant4 code
+  - I'm using version 4.10.1 with patch 2 (4.10.01.p02)
+  - Get it [[http://geant4.web.cern.ch/geant4/support/download.shtml][here]]
+  - Don't bother downloading the data at this point
+  - Unzip. We'll put it in that ~opt~ directory we made earlier
+    #+BEGIN_SRC sh
+      cd /opt/geant4
+      mv downloaded-geant4-file.tar.gz .
+      tar -xzvf downloaded-geant4-file.tar.gz
+    #+END_SRC
+  - This should have created a ~geant4.10.01.p02~ folder
+* Build
+  - Geant4.10 is pretty cmake heavy. I think this is a good thing, but
+    requires you to re-think how code is compiled. In this case, the
+    unzipped code will sit completely untouched in the
+    ~geant4.10.01.p02~ folder we just unzipped.
+  - Here's how it'll work
+    1) Make a build directory
+    2) Use cmake to prepare the build directory
+    3) Build geant4 (compile it)
+    4) Install the useful stuff in /yet another/ folder - the install
+       directory.
+  - So: let's do steps 1 and 2
+    #+BEGIN_SRC sh
+      mkdir geant4.10.01.p02-build/
+      cd geant4.10.01.p02-build/
+      cmake -DCMAKE_INSTALL_PREFIX=/opt/geant4/geant4.10.01.p02-install\
+            -DGEANT4_INSTALL_DATA=ON -DGEANT4_BUILD_MULTITHREADED=ON\
+            -DGEANT4_USE_GDML=ON -DGEANT4_USE_QT=ON -DGEANT4_USE_OPENGL_X11=ON\
+            -DGEANT4_USE_INVENTOR=ON -DGEANT4_USE_RAYTRACER_X11=ON\
+             /opt/geant4/geant4.10.01.p02/
+    #+END_SRC
+  - Note: This command told geant4 to:
+    1) Install the compiled code in our install directory
+       (~-DCMAKE_INSTALL_PREFIX=/opt/geant4/geant4.10.01.p02-install~)
+    2) Download the data files (~-DGEANT4_BUILD_MULTITHREADED=ON~)
+    3) enable parallel processing (~-DGEANT4_BUILD_MULTITHREADED=ON~)
+    4) allows GDML. I don't remember what this does
+       (~-DGEANT4_USE_GDML=ON~)
+    5) Turns on Qt for a nice graphical interface
+       (~-DGEANT4_USE_QT=ON~)
+    6) Turns on OpenGL for nice interactive geometry
+       (~-DGEANT4_USE_OPENGL_X11=ON~)
+    7) Turns on Inventor for another nice interactive geometry
+       (~-DGEANT4_USE_INVENTOR=ON~)
+    8) Turns on the ray tracer, which is sometimes useful for
+       debugging (~-DGEANT4_USE_RAYTRACER_X11=ON~)
+    9) Told geant4 where the source files are
+       (~/opt/geant4/geant4.10.01.p02/~)
+  - Almost there. Now's time to compile:
+    #+BEGIN_SRC sh
+      make -j6    
+    #+END_SRC
+    I'm compiling with 6 cores of my processor. You can choose less!
+    Time for coffee and [[https://xkcd.com/303/][games]]!
+  - Install the compiled code in the ~geant4.10.01.p02-install~
+    directory
+    #+BEGIN_SRC sh
+      make install
+    #+END_SRC
+  - That's it! Geant4 is installed!
+* Wrapping Up
+  You just need to tell linux where to find linux now. Geant does the
+  hard work for you here. Just put the following in your ~.bashrc~
+  file:
+  #+BEGIN_SRC sh
+  source /opt/geant4/geant4.10.00.p02-install/bin/geant4.sh
+  #+END_SRC
+  Now log out, log back in, and get to work!
