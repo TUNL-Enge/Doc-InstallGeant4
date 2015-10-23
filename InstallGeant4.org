@@ -128,14 +128,14 @@
        debugging (~-DGEANT4_USE_RAYTRACER_X11=ON~)
     9) Told geant4 where the source files are
        (~/opt/geant4/geant4.10.01.p02/~)
-  - Almost there. Now's time to compile:
+  - Almost there. Now's time to compile (step 3 above):
     #+BEGIN_SRC sh
       make -j6    
     #+END_SRC
     I'm compiling with 6 cores of my processor. You can choose less!
     Time for coffee and [[https://xkcd.com/303/][games]]!
   - Install the compiled code in the ~geant4.10.01.p02-install~
-    directory
+    directory (step 4 above)
     #+BEGIN_SRC sh
       make install
     #+END_SRC
