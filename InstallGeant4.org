@@ -67,7 +67,6 @@
           make
           sudo make install
 	#+END_SRC
-      - *OR* you can just install [[http://engesrv.physics.ncsu.edu:85/debs/amd64/soxt_1.3.0_amd64.deb][my ubuntu package]] :)
 * Preparation
   - I like to put things like geant4 in the /opt directory. It makes
     them system-wide and easier to separate from the other junk in
@@ -80,7 +79,7 @@
       chown -R longland:longland geant4    
     #+END_SRC
 * Download the geant4 code
-  - I'm using version 4.10.1 with patch 2 (4.10.01.p02)
+  - I'm using version 4.10.06 with patch 1 (4.10.06.p01)
   - Get it [[http://geant4.web.cern.ch/geant4/support/download.shtml][here]]
   - Don't bother downloading the data at this point
   - Unzip. We'll put it in that ~opt~ directory we made earlier
@@ -89,12 +88,12 @@
       mv downloaded-geant4-file.tar.gz .
       tar -xzvf downloaded-geant4-file.tar.gz
     #+END_SRC
-  - This should have created a ~geant4.10.01.p02~ folder
+  - This should have created a ~geant4.10.06.p01~ folder
 * Build
   - Geant4.10 is pretty cmake heavy. I think this is a good thing, but
     requires you to re-think how code is compiled. In this case, the
     unzipped code will sit completely untouched in the
-    ~geant4.10.01.p02~ folder we just unzipped.
+    ~geant4.10.06.p01~ folder we just unzipped.
   - Here's how it'll work
     1) Make a build directory
     2) Use cmake to prepare the build directory
@@ -103,17 +102,17 @@
        directory.
   - So: let's do steps 1 and 2
     #+BEGIN_SRC sh
-      mkdir geant4.10.01.p02-build/
-      cd geant4.10.01.p02-build/
-      cmake -DCMAKE_INSTALL_PREFIX=/opt/geant4/geant4.10.01.p02-install\
+      mkdir geant4.10.06.p01-build/
+      cd geant4.10.06.p01-build/
+      cmake -DCMAKE_INSTALL_PREFIX=/opt/geant4/geant4.10.06.p01-install\
             -DGEANT4_INSTALL_DATA=ON -DGEANT4_BUILD_MULTITHREADED=ON\
             -DGEANT4_USE_GDML=ON -DGEANT4_USE_QT=ON -DGEANT4_USE_OPENGL_X11=ON\
             -DGEANT4_USE_INVENTOR=ON -DGEANT4_USE_RAYTRACER_X11=ON\
-             /opt/geant4/geant4.10.01.p02/
+             /opt/geant4/geant4.10.06.p01/
     #+END_SRC
   - Note: This command told geant4 to:
     1) Install the compiled code in our install directory
-       (~-DCMAKE_INSTALL_PREFIX=/opt/geant4/geant4.10.01.p02-install~)
+       (~-DCMAKE_INSTALL_PREFIX=/opt/geant4/geant4.10.06.p01-install~)
     2) Download the data files (~-DGEANT4_BUILD_MULTITHREADED=ON~)
     3) enable parallel processing (~-DGEANT4_BUILD_MULTITHREADED=ON~)
     4) allows GDML. I don't remember what this does
@@ -127,14 +126,14 @@
     8) Turns on the ray tracer, which is sometimes useful for
        debugging (~-DGEANT4_USE_RAYTRACER_X11=ON~)
     9) Told geant4 where the source files are
-       (~/opt/geant4/geant4.10.01.p02/~)
+       (~/opt/geant4/geant4.10.06.p01/~)
   - Almost there. Now's time to compile (step 3 above):
     #+BEGIN_SRC sh
       make -j6    
     #+END_SRC
     I'm compiling with 6 cores of my processor. You can choose less!
     Time for coffee and [[https://xkcd.com/303/][games]]!
-  - Install the compiled code in the ~geant4.10.01.p02-install~
+  - Install the compiled code in the ~geant4.10.06.p01-install~
     directory (step 4 above)
     #+BEGIN_SRC sh
       make install
@@ -145,6 +144,6 @@
   hard work for you here. Just put the following in your ~.bashrc~
   file:
   #+BEGIN_SRC sh
-  source /opt/geant4/geant4.10.00.p02-install/bin/geant4.sh
+  source /opt/geant4/geant4.10.06.p01-install/bin/geant4.sh
   #+END_SRC
   Now log out, log back in, and get to work!
